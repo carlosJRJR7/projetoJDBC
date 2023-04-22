@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class ClientesDAO implements IClientesDAO{
+    private final Connection connection;
+
+    public ClientesDAO(Connection connection){
+        this.connection = connection;
+    }
 
     @Override
     public Clientes save(Clientes cliente) {

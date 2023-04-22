@@ -10,6 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class ProcessosDAO implements IProcessosDAO{
+    private final Connection connection;
+    public ProcessosDAO(Connection connection){
+        this.connection = connection;
+    }
+
 
     @Override
     public Processo save(Processo processo) {
@@ -116,7 +121,8 @@ public class ProcessosDAO implements IProcessosDAO{
                 long numeroDoProcesso = resultSet.getLong("numero_do_processo");
                 long clienteId = resultSet.getLong("cliente_id");
 
-                ClientesDAO daoCliente = new ClientesDAO();
+                Connection connection1 = ConnectionFactory.getConnection();
+                ClientesDAO daoCliente = new ClientesDAO(connection1);
                 Optional<Clientes> clientesOptional = daoCliente.findById(clienteId);
                 Clientes cliente = clientesOptional.get();
                 Processo processo = new Processo(id, numeroDoProcesso, cliente);
@@ -150,7 +156,9 @@ public class ProcessosDAO implements IProcessosDAO{
                 long processoId = resultSet.getLong("id");
                 long numeroDoProcesso = resultSet.getLong("numero_do_processo");
                 long clienteId = resultSet.getLong("cliente_id");
-                ClientesDAO daoCliente = new ClientesDAO();
+
+                Connection connection1 = ConnectionFactory.getConnection();
+                ClientesDAO daoCliente = new ClientesDAO(connection1);
                 Optional<Clientes> clientesOptional = daoCliente.findById(clienteId);
                 Clientes cliente = clientesOptional.get();
                 processo = new Processo(processoId, numeroDoProcesso, cliente);
@@ -182,7 +190,8 @@ public class ProcessosDAO implements IProcessosDAO{
                 long processoId = resultSet.getLong("id");
                 long numeroProcesso = resultSet.getLong("numero_do_processo");
                 long clienteId = resultSet.getLong("cliente_id");
-                ClientesDAO daoCliente = new ClientesDAO();
+                Connection connection1 = ConnectionFactory.getConnection();
+                ClientesDAO daoCliente = new ClientesDAO(connection1);
                 Optional<Clientes> clientesOptional = daoCliente.findById(clienteId);
                 Clientes cliente = clientesOptional.get();
                 processo = new Processo(processoId, numeroDoProcesso, cliente);

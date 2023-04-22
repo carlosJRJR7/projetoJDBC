@@ -12,6 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class PublicacoesAndIntimacoesDAO implements IPublicacoesAndIntimacoesDAO{
+    private final Connection connection;
+    public PublicacoesAndIntimacoesDAO(Connection connection){
+        this.connection = connection;
+    }
     @Override
     public PublicacoesEIntimacoes save(PublicacoesEIntimacoes publicacoesAndIntimacoes) {
         try (Connection connection = ConnectionFactory.getConnection()) {
@@ -103,7 +107,8 @@ public class PublicacoesAndIntimacoesDAO implements IPublicacoesAndIntimacoesDAO
                 long numero_do_processo = resultSet.getLong("processo");
                 String texto = resultSet.getString("texto");
 
-                ProcessosDAO daoProcessos = new ProcessosDAO();
+                Connection connection1 = ConnectionFactory.getConnection();
+                ProcessosDAO daoProcessos = new ProcessosDAO(connection1);
                 Optional<Processo> processoOptional = daoProcessos.findByNumeroDoProcesso(numero_do_processo);
                 Processo processo = processoOptional.get();
                 PublicacoesEIntimacoes publicacao = new PublicacoesEIntimacoes(id, descricao, data, processo,texto);
@@ -140,7 +145,8 @@ public class PublicacoesAndIntimacoesDAO implements IPublicacoesAndIntimacoesDAO
                 long numeroDoProcesso = resultSet.getLong("processo");
                 String texto = resultSet.getString("texto");
 
-                ProcessosDAO daoProcesso = new ProcessosDAO();
+                Connection connection1 = ConnectionFactory.getConnection();
+                ProcessosDAO daoProcesso = new ProcessosDAO(connection1);
                 Optional<Processo> processoOptional = daoProcesso.findByNumeroDoProcesso(numeroDoProcesso);
                 Processo processo = processoOptional.get();
                 publicacao = new PublicacoesEIntimacoes(publicacaoId, tipo, data, processo, texto);
