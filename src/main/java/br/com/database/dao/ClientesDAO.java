@@ -2,6 +2,7 @@ package br.com.database.dao;
 
 import br.com.database.infra.ConnectionFactory;
 import br.com.database.model.Clientes;
+import br.com.database.model.Tabela;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -44,6 +45,34 @@ public class ClientesDAO implements IClientesDAO{
             throw new RuntimeException(e);
         }
         return cliente;
+    }
+
+    public List<Tabela> buscarClientes() {
+        List<Tabela> clientes = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT tipo, nome_cliente, anterior_a_10042023, "
+                     + "10_04_2023, 11_04_2023, 12_04_2023, 13_04_2023, 14_04_2023 FROM tabela")) {
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Tabela tabela = new Tabela();
+                tabela.setTipo(rs.getString("tipo"));
+                tabela.setNomeCliente(rs.getString("nome_cliente"));
+                tabela.setAnteriorA10_04_2023(rs.getString("anterior_a_10042023"));
+                tabela.setData10042023(rs.getString("10_04_2023"));
+                tabela.setData11042023(rs.getString("11_04_2023"));
+                tabela.setData12042023(rs.getString("12_04_2023"));
+                tabela.setData13042023(rs.getString("13_04_2023"));
+                tabela.setData14042023(rs.getString("14_04_2023"));
+
+                clientes.add(tabela);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return clientes;
     }
 
     @Override
