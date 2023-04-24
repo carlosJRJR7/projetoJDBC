@@ -24,14 +24,13 @@ public class PublicacoesAndIntimacoesDAO implements IPublicacoesAndIntimacoesDAO
                 throw new RuntimeException("Já existe uma publicação ou intimação com o ID informado.");
             }
 
-            String sql = "INSERT INTO publicacoes_e_intimacoes (id, tipo, data, processo, texto) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO publicacoes_e_intimacoes (tipo, data, processo, texto) VALUES (?, ?, ?, ?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, publicacoesAndIntimacoes.getId());
-            preparedStatement.setString(2, publicacoesAndIntimacoes.getTipo());
-            preparedStatement.setDate(3, Date.valueOf(publicacoesAndIntimacoes.getData()));
-            preparedStatement.setLong(4, publicacoesAndIntimacoes.getProcesso().getNumeroDoProcesso());
-            preparedStatement.setString(5, publicacoesAndIntimacoes.getTexto());
+            preparedStatement.setString(1, publicacoesAndIntimacoes.getTipo());
+            preparedStatement.setDate(2, Date.valueOf(publicacoesAndIntimacoes.getData()));
+            preparedStatement.setLong(3, publicacoesAndIntimacoes.getProcesso().getNumeroDoProcesso());
+            preparedStatement.setString(4, publicacoesAndIntimacoes.getTexto());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
