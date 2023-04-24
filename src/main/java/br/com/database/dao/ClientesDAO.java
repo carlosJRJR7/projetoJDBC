@@ -91,7 +91,7 @@ public class ClientesDAO implements IClientesDAO{
     }
 
     @Override
-    public void delete(Long id) throws SQLException, ClienteComProcessosVinculadosException {
+    public void delete(Long id) throws ClienteComProcessosVinculadosException {
         Connection connection = null;
         try {
             connection = ConnectionFactory.getConnection();
@@ -108,10 +108,8 @@ public class ClientesDAO implements IClientesDAO{
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
-        } finally {
-            if (connection != null) {
-                connection.close();
-            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
