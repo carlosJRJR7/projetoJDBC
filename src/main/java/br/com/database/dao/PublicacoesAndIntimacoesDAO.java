@@ -100,6 +100,7 @@ public class PublicacoesAndIntimacoesDAO implements IPublicacoesAndIntimacoesDAO
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
+
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
                 String descricao = resultSet.getString("tipo");
@@ -107,8 +108,7 @@ public class PublicacoesAndIntimacoesDAO implements IPublicacoesAndIntimacoesDAO
                 long numero_do_processo = resultSet.getLong("processo");
                 String texto = resultSet.getString("texto");
 
-                Connection connection1 = ConnectionFactory.getConnection();
-                ProcessosDAO daoProcessos = new ProcessosDAO(connection1);
+                ProcessosDAO daoProcessos = new ProcessosDAO(connection);
                 Optional<Processo> processoOptional = daoProcessos.findByNumeroDoProcesso(numero_do_processo);
                 Processo processo = processoOptional.get();
                 PublicacoesEIntimacoes publicacao = new PublicacoesEIntimacoes(id, descricao, data, processo,texto);
@@ -145,8 +145,7 @@ public class PublicacoesAndIntimacoesDAO implements IPublicacoesAndIntimacoesDAO
                 long numeroDoProcesso = resultSet.getLong("processo");
                 String texto = resultSet.getString("texto");
 
-                Connection connection1 = ConnectionFactory.getConnection();
-                ProcessosDAO daoProcesso = new ProcessosDAO(connection1);
+                ProcessosDAO daoProcesso = new ProcessosDAO(connection);
                 Optional<Processo> processoOptional = daoProcesso.findByNumeroDoProcesso(numeroDoProcesso);
                 Processo processo = processoOptional.get();
                 publicacao = new PublicacoesEIntimacoes(publicacaoId, tipo, data, processo, texto);
