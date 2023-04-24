@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface IClientesDAO {
         Clientes save(Clientes cliente);
         Clientes update(Clientes cliente);
-        public void delete(Long id) throws SQLException, ClientesDAO.ClienteComProcessosVinculadosException;
+        public void delete(Long id) throws SQLException;
         List<Clientes> findAll();
         Optional<Clientes> findById(Long id);
 }

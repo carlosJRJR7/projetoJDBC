@@ -91,7 +91,7 @@ public class ClientesDAO implements IClientesDAO{
     }
 
     @Override
-    public void delete(Long id) throws ClienteComProcessosVinculadosException {
+    public void delete(Long id) throws SQLException {
         Connection connection = null;
         try {
             connection = ConnectionFactory.getConnection();
@@ -101,21 +101,17 @@ public class ClientesDAO implements IClientesDAO{
             countStatement.setLong(1, id);
             ResultSet countResult = countStatement.executeQuery();
             if (countResult.next() && countResult.getInt("count") > 0) {
-                throw new ClienteComProcessosVinculadosException("Não é possível excluir o Cliente pois há Processos vinculados a ele.");
+                throw new SQLException("Não é possível excluir o Cliente pois há Processos vinculados a ele.");
             }
 
             String sql = "DELETE FROM Clientes WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public class ClienteComProcessosVinculadosException extends Exception {
-        public ClienteComProcessosVinculadosException(String message) {
-            super(message);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
         }
     }
 

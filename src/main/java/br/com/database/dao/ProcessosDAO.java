@@ -78,7 +78,7 @@ public class ProcessosDAO implements IProcessosDAO{
     }
 
     @Override
-    public void delete(long id) throws ProcessoComPublicacoesOuIntimacoesVinculadasException {
+    public void delete(long id) throws SQLException{
         try (Connection connection = ConnectionFactory.getConnection()) {
             String sql = "SELECT COUNT(*) FROM publicacoes_e_intimacoes WHERE processo = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -89,7 +89,7 @@ public class ProcessosDAO implements IProcessosDAO{
             int count = resultSet.getInt(1);
 
             if (count > 0) {
-                throw new ProcessoComPublicacoesOuIntimacoesVinculadasException("Não é possível excluir o processo pois existem " + count + " intimações ou publicações vinculadas.");
+                throw new SQLException("Não é possível excluir o processo pois existem " + count + " intimações ou publicações vinculadas.");
             }
 
             sql = "DELETE FROM processos WHERE id = ?";
@@ -99,12 +99,6 @@ public class ProcessosDAO implements IProcessosDAO{
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    public class ProcessoComPublicacoesOuIntimacoesVinculadasException extends Exception {
-        public ProcessoComPublicacoesOuIntimacoesVinculadasException(String message) {
-            super(message);
         }
     }
 
