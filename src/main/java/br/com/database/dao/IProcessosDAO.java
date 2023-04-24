@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface IProcessosDAO {
     Processo save(Processo processo);
     Processo update(Processo processo);
-    void delete(long id);
+    void delete(long id) throws ProcessosDAO.ProcessoComPublicacoesOuIntimacoesVinculadasException;
     List<Processo> findAll();
     Optional<Processo> findById(long id);
 }
